@@ -59,11 +59,12 @@ const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&
 const n=v=>v==null||v===""?"-":typeof v!="number"?esc(v):v>=1e8?(v/1e8).toFixed(1)+"억":v>=1e4?(v/1e4).toFixed(1).replace(/\.0$/,"")+"만":v.toLocaleString();
 const safe=u=>/^https:\/\//.test(u||"")?u:"#";
 const first=t=>{t=String(t||"");const m=t.split(/\n|(?<=[.!?。])\s+/)[0];return m||t};
+const wl=w=>{const W="W"+w.week.slice(6);if(w.label)return W+" · 월~수 중간";const[sm,sd]=w.start.slice(5).split("-").map(Number),[em,ed]=w.end.slice(5).split("-").map(Number);return `${W} · ${sm}/${sd}~${em==sm?ed:em+"/"+ed}`};
 const $=id=>document.getElementById(id);
 $("f").onsubmit=async ev=>{ev.preventDefault();PW=$("pw").value;$("err").textContent="확인 중…";
  try{const idx=await dec("data/index.enc.json");sessionStorage.setItem("pw",PW);start(idx)}catch(e){$("err").textContent="비밀번호가 맞지 않아요"}};
 async function start(idx){IDX=idx;$("gate").hidden=true;$("app").hidden=false;const s=$("wk");
- s.innerHTML=idx.weeks.slice().reverse().map(w=>`<option value="${esc(w.week)}">${esc(w.week)} (${w.start.slice(5)}~${w.end.slice(5)})${w.label?" 중간":""}</option>`).join("");
+ s.innerHTML=idx.weeks.slice().reverse().map(w=>`<option value="${esc(w.week)}">${esc(wl(w))}</option>`).join("");
  s.onchange=()=>load(s.value);
  $("rtabs").onclick=e=>{const r=e.target.dataset.r;if(r){reg=r;render()}};
  $("ptabs").innerHTML=Object.keys(LN).map(k=>`<button data-k="${k}">${LN[k]}</button>`).join("");
