@@ -61,14 +61,14 @@ const $=id=>document.getElementById(id);
 $("f").onsubmit=async ev=>{ev.preventDefault();PW=$("pw").value;$("err").textContent="확인 중…";
  try{const idx=await dec("data/index.enc.json");sessionStorage.setItem("pw",PW);start(idx)}catch(e){$("err").textContent="비밀번호가 맞지 않아요"}};
 async function start(idx){IDX=idx;$("gate").hidden=true;$("app").hidden=false;const s=$("wk");
- s.innerHTML=idx.weeks.slice().reverse().map(w=>`<option value="${esc(w.week)}">${esc(w.week)} (${w.start.slice(5)}~${w.end.slice(5)})</option>`).join("");
+ s.innerHTML=idx.weeks.slice().reverse().map(w=>`<option value="${esc(w.week)}">${esc(w.week)} (${w.start.slice(5)}~${w.end.slice(5)})${w.label?" 중간":""}</option>`).join("");
  s.onchange=()=>load(s.value);
  $("rtabs").onclick=e=>{const r=e.target.dataset.r;if(r){reg=r;render()}};
  $("ptabs").innerHTML=Object.keys(LN).map(k=>`<button data-k="${k}">${LN[k]}</button>`).join("");
  $("ptabs").onclick=e=>{const k=e.target.dataset.k;if(k){lk=k;render()}};load(s.value)}
 async function load(w){try{cur=await dec(`data/${w}.enc.json`);render()}catch(e){alert("데이터를 불러오지 못했어요. 새로고침 해 주세요.")}}
 function render(){
- $("htitle").textContent=`${cur.week} 숏폼 트렌드`;$("hlead").textContent=`분석 기간 ${cur.start} ~ ${cur.end} · 업데이트 ${cur.updated} · ${IDX.schedule}`;
+ $("htitle").textContent=`${cur.week} 숏폼 트렌드`;$("hlead").textContent=`분석 기간 ${cur.start} ~ ${cur.end} · 업데이트 ${cur.updated}${cur.label?" · "+cur.label:""} · ${IDX.schedule}`;
  [...$("rtabs").children].forEach(b=>b.classList.toggle("on",b.dataset.r==reg));[...$("ptabs").children].forEach(b=>b.classList.toggle("on",b.dataset.k==lk));
  $("recs").innerHTML=(cur.recommendations||[]).map((r,i)=>`<div class=rec><a href="${esc(safe(r.url))}" target=_blank rel="noopener noreferrer">${r.thumb?`<img src="${r.thumb}" alt="" loading=lazy>`:""}</a>
  <span><span class=tag>0${i+1}</span> <span class=fine>${esc(r.list)} ${esc(r.rank)}위 · 조회 ${n(r.views)}${r.views_est?" (추정)":""}</span></span>
