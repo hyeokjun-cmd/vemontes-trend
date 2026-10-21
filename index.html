@@ -26,7 +26,7 @@ h2{font-size:22px;font-weight:800;color:var(--black)}
 .rank{font-family:var(--serif);font-size:26px;width:34px;color:var(--muted);flex:none}.rank.hi{color:var(--accent)}
 .st{width:72px;height:90px;border-radius:8px;object-fit:cover;flex:none;background:var(--ivory2)}.info{flex:1;min-width:0}
 .info h4{font-size:15px;color:var(--black);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.nums{margin:2px 0 6px}.nums b{color:var(--black)}.sc{color:var(--accent);font-weight:800}
-.est{font-size:10px;color:#44507a;background:#eef0f6;border-radius:99px;padding:1px 6px;margin-left:4px}
+.estn{font-size:11px;font-weight:600;color:#44507a;white-space:nowrap}.est{font-size:10px;color:#44507a;background:#eef0f6;border-radius:99px;padding:1px 6px;margin-left:4px}
 .ht{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;list-style:none}.ht li{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:13px}.ht b{display:block;font-size:15px;color:var(--black)}
 .foot{padding:40px 0}details.an summary{cursor:pointer;list-style:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}details.an summary::-webkit-details-marker{display:none}details.an summary::after{content:' 더보기 ▾';color:var(--accent);font-size:11px;font-weight:700}details.an[open] summary{white-space:normal}details.an[open] summary::after{content:' 접기 ▴'}details.an p{margin-top:4px}.ht b{overflow-wrap:anywhere}.rec h4{overflow-wrap:anywhere}
 #gate{max-width:360px;margin:18vh auto;padding:28px;background:#fff;border:1px solid var(--line);border-radius:16px;text-align:center}
@@ -45,7 +45,7 @@ h2{font-size:22px;font-weight:800;color:var(--black)}
 <section style="margin-top:20px"><div class="ins" id="ins"></div></section>
 <section style="margin-top:32px"><div class="sh"><h2>이번 주 베몽테스 참고 영상 4개</h2><span class="fine">이번 주 수집 영상 중 베몽테스가 참고하기 좋은 영상</span></div><div class="recs" id="recs"></div></section>
 <section><div class="ptabs" id="ptabs"></div><div class="sh"><h2 id="ltitle"></h2><span class="fine" id="lcnt"></span></div><ul class="list" id="list"></ul>
-<p class="fine" style="margin-top:10px">순위 기준: 점수 = 100 × (조회수 백분위 50% + 반응률 백분위 30% + 증가속도 백분위 20%). 백분위는 각 리스트의 수집 후보 안에서 계산 · 반응률 = (좋아요+댓글+공유)÷조회수 · 증가속도 = 게시 후 일평균 조회수 · 최소 조회수 종합 10만/뷰티 1만 · 크리에이터당 최대 2개. 공식 플랫폼 순위가 아닌 수집 후보 풀 기준입니다.<br>인스타그램 조회수는 제3자(Shorti) 표시값으로 <b>미확인/추정</b>이며, 인스타 반응률·점수는 참고치입니다(공유 수 미제공). 틱톡 조회수는 직접 확인한 값입니다.<br>제품 노출 방식은 분석 글로만 기재합니다. 시청층은 추정입니다.</p></section>
+<p class="fine" style="margin-top:10px">순위 기준: 점수 = 100 × (조회수 백분위 50% + 반응률 백분위 30% + 증가속도 백분위 20%). 백분위는 각 리스트의 수집 후보 안에서 계산 · 반응률 = (좋아요+댓글+공유)÷조회수 · 증가속도 = 게시 후 일평균 조회수 · 최소 조회수 종합 10만/뷰티 1만 · 크리에이터당 최대 2개. 공식 플랫폼 순위가 아닌 수집 후보 풀 기준입니다.<br>목요일 중간 업데이트(월~수 3일)는 후보가 10개 미만인 리스트에 한해 3일 환산 최소 조회수(종합 약 4.3만/뷰티 약 4,300)를 적용합니다.<br>인스타그램 조회수는 제3자(Shorti) 표시값으로 <b>미확인/추정</b>이며, 인스타 반응률·점수는 참고치입니다(공유 수 미제공). 틱톡 조회수는 직접 확인한 값입니다.<br>제품 노출 방식은 분석 글로만 기재합니다. 시청층은 추정입니다.</p></section>
 <section><div class="sh"><h2 id="httl"></h2></div><ul class="ht" id="ht"></ul><p class="fine" id="hnote" style="margin-top:10px"></p></section>
 <p class="fine foot" id="foot"></p></main></div>
 <script src="xlsx.full.min.js"></script>
@@ -80,7 +80,7 @@ function render(){
  <h4><a href="${esc(safe(r.url))}" target=_blank rel="noopener noreferrer">${esc(r.creator)} ↗</a></h4><div class=why>${esc(r.reason)}</div></div>`).join("");
  const ins=(cur.insights||{})[reg]||[];$("ins").hidden=!ins.length;
  $("ins").innerHTML=`<h3>이번 주 핵심 3줄 · ${RN[reg]}</h3><ol>${ins.map(t=>`<li>${esc(t)}</li>`).join("")}</ol>`;
- const arr=cur.lists[`${reg}_${lk}`]||[];$("ltitle").textContent=`${RN[reg]} · ${LN[lk]}`;
+ const arr=cur.lists[`${reg}_${lk}`]||[];$("ltitle").textContent=`${RN[reg]} · ${LN[lk]}`;if(lk.startsWith("instagram")){const e=document.createElement("small");e.className="estn";e.textContent=" 점수·조회수 추정(Shorti 기준)";$("ltitle").appendChild(e)}
  $("lcnt").textContent=arr.length<10?`수집 후보 ${arr.length}개 (10개 미달 — 다른 영상으로 채우지 않음)`:`${arr.length}개`;
  $("list").innerHTML=arr.map(c=>`<li class=row><span class="rank ${c.rank<=3?"hi":""}">${c.rank}</span><a href="${esc(safe(c.url))}" target=_blank rel="noopener noreferrer"><img class=st src="${c.thumb}" alt="" loading=lazy></a>
  <div class=info><h4><a href="${esc(safe(c.url))}" target=_blank rel="noopener noreferrer">${esc(c.creator)}</a></h4>
