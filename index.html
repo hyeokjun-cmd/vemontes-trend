@@ -53,12 +53,12 @@ h2{font-size:22px;font-weight:800;color:var(--black)}
 const b64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));let PW,cur,reg="kr",lk="instagram_overall",IDX;
 const LN={instagram_overall:"인스타그램 조회수 TOP10",instagram_beauty:"인스타그램 뷰티 TOP10",tiktok_overall:"틱톡 조회수 TOP10",tiktok_beauty:"틱톡 뷰티 TOP10"};
 const RN={kr:"한국",global:"글로벌"};
-function carUpd(){const l=$("list");$("cp").disabled=l.scrollLeft<5;$("cn").disabled=l.scrollLeft+l.clientWidth>=l.scrollWidth-5}
+function carUpd(){const l=$("list"),c=l.querySelectorAll(".row");if(!c.length){$("cp").disabled=$("cn").disabled=true;return}const m=l.getBoundingClientRect(),mid=m.left+m.width/2,ctr=e=>{const r=e.getBoundingClientRect();return r.left+r.width/2};$("cp").disabled=l.scrollLeft<=40||ctr(c[0])>=mid-40;$("cn").disabled=l.scrollLeft+l.clientWidth>=l.scrollWidth-40||ctr(c[c.length-1])<=mid+40}
 function carGo(d){const l=$("list"),c=l.querySelector(".row");if(c)l.scrollBy({left:d*(c.offsetWidth+14),behavior:"smooth"})}
 document.addEventListener("DOMContentLoaded",()=>{const l=$("list");$("cp").onclick=()=>carGo(-1);$("cn").onclick=()=>carGo(1);l.addEventListener("scroll",carUpd,{passive:true});
  let dn=false,sx=0,sl=0,mv=0;l.addEventListener("pointerdown",e=>{if(e.pointerType!=="mouse")return;dn=true;mv=0;sx=e.clientX;sl=l.scrollLeft});
  addEventListener("pointermove",e=>{if(!dn)return;const dx=e.clientX-sx;mv=Math.max(mv,Math.abs(dx));if(mv>5){l.classList.add("drag");l.scrollLeft=sl-dx}});
- addEventListener("pointerup",()=>{if(!dn)return;dn=false;if(l.classList.contains("drag")){l.classList.remove("drag");const c=l.querySelector(".row");if(c){const w=c.offsetWidth+14;l.scrollTo({left:Math.round(l.scrollLeft/w)*w,behavior:"smooth"})}}});
+ addEventListener("resize",carUpd);l.addEventListener("scrollend",carUpd);addEventListener("pointerup",()=>{if(!dn)return;dn=false;if(l.classList.contains("drag")){l.classList.remove("drag");const c=l.querySelector(".row");if(c){const w=c.offsetWidth+14;l.scrollTo({left:Math.round(l.scrollLeft/w)*w,behavior:"smooth"})}}});
  l.addEventListener("click",e=>{if(mv>5){e.preventDefault();e.stopPropagation();mv=0}},true);l.addEventListener("dragstart",e=>e.preventDefault())});
 async function dec(path){const e=await (await fetch(path,{cache:"no-store"})).json();
  const km=await crypto.subtle.importKey("raw",new TextEncoder().encode(PW),"PBKDF2",false,["deriveKey"]);
