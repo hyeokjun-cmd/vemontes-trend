@@ -81,7 +81,7 @@ function render(){
  const ins=(cur.insights||{})[reg]||[];$("ins").hidden=!ins.length;
  $("ins").innerHTML=`<h3>이번 주 핵심 3줄 · ${RN[reg]}</h3><ol>${ins.map(t=>`<li>${esc(t)}</li>`).join("")}</ol>`;
  const arr=cur.lists[`${reg}_${lk}`]||[];$("ltitle").textContent=`${RN[reg]} · ${LN[lk]}`;if(lk.startsWith("instagram")){const e=document.createElement("small");e.className="estn";e.textContent=" 점수·조회수 추정(Shorti 기준)";$("ltitle").appendChild(e)}
- $("lcnt").textContent=arr.length<10?`수집 후보 ${arr.length}개 (10개 미달 — 다른 영상으로 채우지 않음)`:`${arr.length}개`;
+ $("lcnt").textContent=arr.length<10?`기준 충족 ${arr.length}개 (기준을 낮추지 않음)`:`${arr.length}개`;
  $("list").innerHTML=arr.map(c=>`<li class=row><span class="rank ${c.rank<=3?"hi":""}">${c.rank}</span><a href="${esc(safe(c.url))}" target=_blank rel="noopener noreferrer"><img class=st src="${c.thumb}" alt="" loading=lazy></a>
  <div class=info><h4><a href="${esc(safe(c.url))}" target=_blank rel="noopener noreferrer">${esc(c.creator)}</a></h4>
  <div class="nums fine">조회 <b>${n(c.views)}</b>${c.views_est?'<span class=est>미확인/추정</span>':""} · 좋아요 ${n(c.likes)} · 댓글 ${n(c.comments)}${c.shares!=null?" · 공유 "+n(c.shares):""} · 점수 <span class=sc>${c.score}</span> · ${esc(c.date)}</div>
