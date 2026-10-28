@@ -45,13 +45,14 @@ h2{font-size:22px;font-weight:800;color:var(--black)}
 <section style="margin-top:20px"><div class="ins" id="ins"></div></section>
 <section style="margin-top:32px"><div class="sh"><h2>이번 주 베몽테스 참고 영상 4개</h2><span class="fine">이번 주 수집 영상 중 베몽테스가 참고하기 좋은 영상</span></div><div class="recs" id="recs"></div></section>
 <section><div class="ptabs" id="ptabs"></div><div class="sh"><h2 id="ltitle"></h2><span class="fine" id="lcnt"></span></div><div class="car"><button class="carb p" id="cp" aria-label="이전">‹</button><ul class="list" id="list"></ul><button class="carb n" id="cn" aria-label="다음">›</button></div>
-<p class="fine" style="margin-top:10px">순위 기준: 점수 = 100 × (조회수 백분위 50% + 반응률 백분위 30% + 증가속도 백분위 20%). 백분위는 각 리스트의 수집 후보 안에서 계산 · 반응률 = (좋아요+댓글+공유)÷조회수 · 증가속도 = 게시 후 일평균 조회수 · 최소 조회수: 틱톡 종합 TOP10 5만 · 인스타 종합 TOP10 100만 · 뷰티 TOP10 10만(월·목 동일) · 크리에이터당 최대 2개. 기준에 못 미치면 기준을 낮추지 않고 리스트를 10개 미만으로 둡니다. 공식 플랫폼 순위가 아닌 수집 후보 풀 기준입니다.<br>한국·글로벌 완전 분리(글로벌에서 한국 계정 제외, 한국에서 해외 계정 제외) · 종합/뷰티 간 중복 허용 · 브랜드·크리에이터는 구분 없이 수치로 선정 · 뷰티에서 헤어 영상 제외.<br>유명인 제외: 연예인·배우·가수·아이돌·운동선수 등 유명인 본인 영상, 출연 영상, 유명인이 만든 브랜드의 영상은 제외합니다. 유명인이 만든 밈·챌린지라도 크리에이터가 따라 한 영상은 크리에이터 영상으로 보고 조회수 기준을 넘으면 포함합니다.<br>종합 TOP10 카테고리: 트렌드·밈·라이프스타일·코믹·스토리만 포함 · 먹방, 제작 과정(건물·피규어), 콘서트·무대 직캠, 게임, 스포츠 하이라이트, 뉴스는 제외합니다.<br>데이터 출처: 틱톡은 기존 수집 + SocialCrawl. 인스타그램 조회수는 제3자(Shorti) 표시값으로 <b>미확인/추정</b>이며, 인스타 반응률·점수는 참고치입니다(공유 수 미제공). 틱톡 조회수는 직접 확인한 값입니다.<br>제품 노출 방식은 분석 글로만 기재합니다. 시청층은 추정입니다.</p></section>
+<p class="fine" style="margin-top:10px">순위 기준: 조회수 50%·참여도 30%·관측 증가 속도 20%. 동일 후보군의 입력과 두 시점의 24시간 관측값이 모두 갖춰진 목록에서만 종합 점수를 계산합니다. 없는 수치를 0으로 채우지 않습니다. 자료 부족 시 종합 점수 없이 조회수 참고순으로 표시합니다. 기존 주차의 점수는 이전 산식에 따른 참고값입니다.<br>최소 조회수: 인스타 종합 100만·틱톡 종합 5만·뷰티 10만. 한 크리에이터당 최대 2개. 기준 미달로 10개 미만일 수 있습니다. 플랫폼 전체가 아닌 수집 후보군 기준입니다.<br>한국·글로벌 계정 분류와 뷰티/종합 분류를 구별합니다. 유명인 본인·출연·소유 브랜드, 재업로드는 제외하며, 유명인 밈을 따라 한 크리에이터 영상은 허용합니다. 뷰티에서 헤어 제외. 종합에는 트렌드·밈·라이프스타일·코믹·스토리만 포함합니다.<br>출처·수집 시각·원본 대조 상태는 영상별로 표시합니다. API 제공값은 원본 대조 완료와 다릅니다. 실제 영상 시청자의 연령·성별과 유입 경로는 확인되지 않으면 표시하지 않습니다.</p></section>
 <section><div class="sh"><h2 id="httl"></h2></div><ul class="ht" id="ht"></ul><p class="fine" id="hnote" style="margin-top:10px"></p></section>
 <p class="fine foot" id="foot"></p></main></div>
 <script src="xlsx.full.min.js"></script>
+<script src="evidence-ui.js"></script>
 <script>
 const b64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));let PW,cur,reg="kr",lk="instagram_overall",IDX;
-const LN={instagram_overall:"인스타그램 조회수 TOP10",instagram_beauty:"인스타그램 뷰티 TOP10",tiktok_overall:"틱톡 조회수 TOP10",tiktok_beauty:"틱톡 뷰티 TOP10"};
+const LN={instagram_overall:"인스타그램 종합 TOP10",instagram_beauty:"인스타그램 뷰티 TOP10",tiktok_overall:"틱톡 종합 TOP10",tiktok_beauty:"틱톡 뷰티 TOP10"};
 const RN={kr:"한국",global:"글로벌"};
 function carUpd(){const l=$("list"),c=l.querySelectorAll(".row");if(!c.length){$("cp").disabled=$("cn").disabled=true;return}const m=l.getBoundingClientRect(),mid=m.left+m.width/2,ctr=e=>{const r=e.getBoundingClientRect();return r.left+r.width/2};$("cp").disabled=l.scrollLeft<=40||ctr(c[0])>=mid-40;$("cn").disabled=l.scrollLeft+l.clientWidth>=l.scrollWidth-40||ctr(c[c.length-1])<=mid+40}
 function carGo(d){const l=$("list"),c=l.querySelector(".row");if(c)l.scrollBy({left:d*(c.offsetWidth+14),behavior:"smooth"})}
@@ -83,25 +84,25 @@ function render(){
  $("htitle").textContent=`${cur.week} 숏폼 트렌드`;$("hlead").textContent=`분석 기간 ${cur.start} ~ ${cur.end} · 업데이트 ${cur.updated}${cur.label?" · "+cur.label:""} · ${IDX.schedule}`;
  [...$("rtabs").children].forEach(b=>b.classList.toggle("on",b.dataset.r==reg));[...$("ptabs").children].forEach(b=>b.classList.toggle("on",b.dataset.k==lk));
  $("recs").innerHTML=(cur.recommendations||[]).map((r,i)=>`<div class=rec><a href="${esc(safe(r.url))}" target=_blank rel="noopener noreferrer">${r.thumb?`<img src="${r.thumb}" alt="" loading=lazy>`:""}</a>
- <span><span class=tag>0${i+1}</span> <span class=fine>${esc(r.list)} ${esc(r.rank)}위 · 조회 ${n(r.views)}${r.views_est?" (추정)":""}</span></span>
+ <span><span class=tag>0${i+1}</span> <span class=fine>${esc(r.list)} ${esc(r.rank)}위 · 조회 ${n(r.views)}${" ("+evidenceLabel(r)+")"}</span></span>
  <h4><a href="${esc(safe(r.url))}" target=_blank rel="noopener noreferrer">${esc(r.creator)} ↗</a></h4><div class=why>${esc(r.reason)}</div></div>`).join("");
  const ins=(cur.insights||{})[reg]||[];$("ins").hidden=!ins.length;
  $("ins").innerHTML=`<h3>이번 주 핵심 3줄 · ${RN[reg]}</h3><ol>${ins.map(t=>`<li>${esc(t)}</li>`).join("")}</ol>`;
- const arr=cur.lists[`${reg}_${lk}`]||[];$("ltitle").textContent=`${RN[reg]} · ${LN[lk]}`;if(lk.startsWith("instagram")){const e=document.createElement("small");e.className="estn";e.textContent=" 점수·조회수 추정(Shorti 기준)";$("ltitle").appendChild(e)}
- $("lcnt").textContent=arr.length<10?`수집 후보 ${arr.length}개 (기준을 낮추지 않음)`:`${arr.length}개`;
- $("list").scrollLeft=0;$("list").innerHTML=(arr.length?"":`<li class=empty>수집 후보 0개 · 기준을 충족한 영상이 없습니다</li>`)+arr.map(c=>`<li class=row><span class="rank ${c.rank<=3?"hi":""}">${c.rank}</span><a href="${esc(safe(c.url))}" target=_blank rel="noopener noreferrer"><img class=st src="${c.thumb}" alt="" loading=lazy></a>
+ const arr=cur.lists[`${reg}_${lk}`]||[];$("ltitle").textContent=`${RN[reg]} · ${LN[lk]}`;{const e=document.createElement("small");e.className="estn";const st=cur.list_stats?.[`${reg}_${lk}`];e.textContent=st?(st.score_mode==="weighted"?" 50/30/20 종합 점수순":" 조회수 참고순·종합점수 미산정"):" 기존 주차·이전 산식 참고 점수";$("ltitle").appendChild(e)}
+ const stat=cur.list_stats?.[`${reg}_${lk}`];$("lcnt").textContent=stat?`적격 후보 ${stat.eligible_candidates}개 · 선정 ${arr.length}개`:`선정 ${arr.length}개 · 전체 후보 수 미기록`;
+ $("list").scrollLeft=0;$("list").innerHTML=(arr.length?"":`<li class=empty>수집 후보 0개 · 기준을 충족한 영상이 없습니다</li>`)+arr.map(c=>`<li class=row><span class="rank ${c.rank<=3?"hi":""}">${c.rank}</span><a href="${esc(safe(c.url))}" target=_blank rel="noopener noreferrer">${c.thumb?`<img class=st src="${esc(c.thumb)}" alt="" loading=lazy>`:""}</a>
  <div class=info><h4><a href="${esc(safe(c.url))}" target=_blank rel="noopener noreferrer">${esc(c.creator)}</a></h4>
- <div class="nums fine">조회 <b>${n(c.views)}</b>${c.views_est?'<span class=est>미확인/추정</span>':""} · 좋아요 ${n(c.likes)} · 댓글 ${n(c.comments)}${c.shares!=null?" · 공유 "+n(c.shares):""} · 점수 <span class=sc>${c.score}</span> · ${esc(c.date)}</div>
- <b style="font-size:11px;color:var(--accent)">훅·편집 구성 분석</b><details class=an><summary>${esc(c.short||first(c.analysis))}</summary><p>${esc(c.analysis)}</p></details><div class=fine style="margin-top:4px">시청층(추정): ${esc(c.audience)}</div></div></li>`).join("");
+ <div class="nums fine">조회 <b>${n(c.views)}</b>${" <span class=est>"+esc(evidenceLabel(c))+"</span>"} · 좋아요 ${n(c.likes)} · 댓글 ${n(c.comments)}${c.shares!=null?" · 공유 "+n(c.shares):""} · 점수 <span class=sc>${c.score==null?"미산정":Number(c.score).toFixed(1)}</span> · ${esc(c.date)}</div>
+ <div class=fine>${esc(sourceLine(c))}</div><b style="font-size:11px;color:var(--accent)">훅·편집 분석 · ${esc(analysisLabel(c))}</b><details class=an><summary>${esc(c.short||first(c.analysis))}</summary><p>${esc(c.analysis)}</p></details><div class=fine style="margin-top:4px">실제 영상 시청층·유입 경로 미확인</div>${embedMarkup(c)}</div></li>`).join("");
  setTimeout(carUpd,50);
- $("httl").textContent=`${RN[reg]} 해시태그 TOP10`;
+ $("httl").textContent=`${RN[reg]} 수집 후보 내 해시태그 빈도`;
  $("ht").innerHTML=cur.hashtags[reg].map(h=>`<li><span class=fine>${h.rank}위</span><b>${esc(h.hashtag)}</b><span class=fine>크리에이터 ${h.creators} · 게시물 ${h.posts}</span></li>`).join("");
  $("hnote").textContent=`기준: ${cur.hashtag_method} ${cur.hashtag_caveat}`;
- $("foot").textContent="데이터는 수집 시점 기준이며 이후 수치는 변할 수 있습니다. 영상 링크가 삭제돼도 썸네일은 리포트에 보관됩니다."}
+ $("foot").textContent=`생성 시각: ${cur.generated_at||cur.updated||"미기록"} · 숫자는 수집 시점 기준입니다. 임베드가 제한된 영상은 원본 링크로 확인하세요.`}
 $("dl").onclick=()=>{const wb=XLSX.utils.book_new();
- XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet((cur.recommendations||[]).map((r,i)=>({번호:i+1,크리에이터:r.creator,링크:r.url,리스트:r.list,순위:r.rank,조회수:r.views,이유:r.reason}))),"참고영상4");
+ XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet((cur.recommendations||[]).map((r,i)=>({번호:i+1,크리에이터:r.creator,링크:r.url,리스트:r.list,순위:r.rank,조회수:r.views,조회수상태:evidenceLabel(r),이유:r.reason}))),"참고영상4");
  for(const g of ["kr","global"])if(cur.insights)XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(cur.insights[g].map((t,i)=>({번호:i+1,핵심:t}))),`${RN[g]}_핵심3줄`);
- for(const k in cur.lists){const [g,p,c]=k.split("_");XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(cur.lists[k].map(x=>({순위:x.rank,크리에이터:x.creator,링크:x.url,게시일:x.date,조회수:x.views,조회수상태:x.views_est?"미확인/추정":"확인",좋아요:x.likes,댓글:x.comments,공유:x.shares,점수:x.score,분석:x.analysis,"시청층(추정)":x.audience}))),`${RN[g]}_${p=="instagram"?"IG":"TT"}_${c=="beauty"?"뷰티":"조회수"}`)}
+ for(const k in cur.lists){const [g,p,c]=k.split("_");XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(cur.lists[k].map(x=>({순위:x.rank,크리에이터:x.creator,링크:x.url,게시일:x.date,조회수:x.views,조회수상태:evidenceLabel(x),좋아요:x.likes,댓글:x.comments,공유:x.shares,점수:x.score??null,점수기준:x.score_basis||"기존 산식·근거 확인 필요",조회수출처:x.evidence?.views?.source||x.views_source||"미기록",수집시각:x.evidence?.views?.observed_at||"미기록",조회수범위:x.evidence?.views?.view_scope||"미확인",분석근거:analysisLabel(x),분석:x.analysis,실제시청층:"미확인",실제유입경로:"미확인"}))),`${RN[g]}_${p=="instagram"?"IG":"TT"}_${c=="beauty"?"뷰티":"조회수"}`)}
  for(const g of ["kr","global"])XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(cur.hashtags[g].map(h=>({순위:h.rank,해시태그:h.hashtag,크리에이터수:h.creators,게시물수:h.posts,풀내조회수합:h.total_views_in_pool}))),`${RN[g]}_해시태그`);
  XLSX.writeFile(wb,`베몽테스_트렌드_${cur.week}.xlsx`)};
 if(sessionStorage.getItem("pw")){PW=sessionStorage.getItem("pw");dec("data/index.enc.json").then(start).catch(()=>sessionStorage.removeItem("pw"))}
